@@ -10,5 +10,8 @@ firebase.initializeApp({
 });
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages.
-const messaging = firebase.messaging();
+if (firebase.messaging.isSupported()) {
+    const messaging = firebase.messaging()
+
+}
 // [END initialize_firebase_in_sw]

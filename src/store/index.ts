@@ -12,7 +12,7 @@ export default new Vuex.Store({
     actions: {
         readMarkets: async context => {
             const serviceKey = 'alJI2tyVWfvJgufBQ1Q2DGYe5QUPWcPJ11x6W9hTWil3uLnIsK2ABRLn6FFnIZt5EzJI2lage2Aaa7ub9vLoWA%3D%3D'
-            
+
             try {
                 const response = await axios.get('http://openapi.tago.go.kr/openapi/service/BusLcInfoInqireService/getCtyCodeList?ServiceKey=' + serviceKey)
                 console.log(response)
