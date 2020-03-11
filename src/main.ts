@@ -19,6 +19,7 @@ const config = {
 }
 firebase.initializeApp(config)
 
+console.log('initializing')
 if (firebase.messaging.isSupported()) {
     const messaging = firebase.messaging()
     const keyPair = 'BEbDotnZHQRCXVv8Pu8iWX6ODK5iuoHiauRh5pEL2_Pq3ZHB9KN4PL2N99-CUsjE1pkda4fu-d62Vbz342viZBY'
@@ -27,10 +28,14 @@ if (firebase.messaging.isSupported()) {
         console.log('Notification permission granted.')
         messaging.getToken().then((token) => {
             console.log(token)
+            store.state.token = token
         })
     }).catch((err) => {
         console.log('Unable to get permission to notify.', err)
     })
+} else {
+    store.state.token = 'Notification is not supported'
+    console.log('Firebase messaging is not supported')
 }
 
 new Vue({

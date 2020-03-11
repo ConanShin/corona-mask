@@ -1,10 +1,16 @@
 <template>
     <div>
-        <div>주변 약국</div>
-        <div id="location">
-            <label>내 위치 찾기</label>
-            <button @click="setMyLocation"></button>
-        </div>
+<!--        <div>Token</div>-->
+<!--        <div>{{token}}</div>-->
+        <div>Message</div>
+        <div>{{$store.getters.message}}</div>
+<!--        <div>주변 약국</div>-->
+        <button @click="$store.dispatch('startSSE')">Subscribe</button>
+        <button @click="$store.dispatch('stopSSE')">Unsubscribe</button>
+<!--        <div id="location">-->
+<!--            <label>내 위치 찾기</label>-->
+<!--            <button @click="setMyLocation"></button>-->
+<!--        </div>-->
     </div>
 </template>
 
@@ -14,8 +20,11 @@
 
     @Component
     export default class Home extends Vue {
+        get token () {
+            return this.$store.getters.token
+        }
         mounted() {
-            this.$store.dispatch('readMarkets')
+            console.log('initializing')
         }
         setMyLocation () {
             if (navigator.geolocation) {

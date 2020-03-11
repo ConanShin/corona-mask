@@ -8,10 +8,24 @@ importScripts('https://www.gstatic.com/firebasejs/5.5.6/firebase-messaging.js');
 firebase.initializeApp({
     'messagingSenderId': '153381804155'
 });
+// [END initialize_firebase_in_sw]
 
+// [START background_handler]
 // Retrieve an instance of Firebase Messaging so that it can handle background messages.
 if (firebase.messaging.isSupported()) {
     const messaging = firebase.messaging()
 
+    messaging.setBackgroundMessageHandler(function(payload) {
+        console.log('[firebase-messaging-sw.js] Received background message ', payload);
+        // Customize notification here
+        const notificationTitle = 'Background Message Title';
+        const notificationOptions = {
+            body: 'Background Message body.',
+            icon: './favicon.ico'
+        };
+
+        return self.registration.showNotification(notificationTitle,
+            notificationOptions);
+    });
 }
-// [END initialize_firebase_in_sw]
+// [END background_handler]
