@@ -49,7 +49,7 @@ if (!sessionStorage.getItem('UUID')) {
     sessionStorage.setItem('UUID', getUUID())
 }
 
-window.onbeforeunload = async () => {
+window.onunload = async () => {
     await store.dispatch('stopSSE')
 }
 
