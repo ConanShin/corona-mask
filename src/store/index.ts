@@ -6,10 +6,13 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 Vue.use(Vuex)
 
+const BASE_URL = 'http://52.79.142.42:5000'
+// const BASE_URL = 'https://localhost:5000'
+
 export default new Vuex.Store({
     state: {
         token: 'Loading...!',
-        message: 'No Message'
+        message: 'No Message',
     },
     mutations: {},
     actions: {
@@ -22,7 +25,14 @@ export default new Vuex.Store({
             } catch (error) {
                 console.log('error', error)
             }
+        },
+        stopSSE: async context => {
+            const uuid = sessionStorage.getItem('uuid')
+            console.log('close event source ', uuid)
+            // @ts-ignore
+            await axios.delete(`${BASE_URL}/api/remove/${uuid}`)
         }
+
     },
     getters: {
         token: state => state.token,

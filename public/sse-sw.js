@@ -8,13 +8,32 @@ const getUUID = () => { // UUID v4 generator in JavaScript (RFC4122 compliant)
     })
 }
 const UUID = getUUID()
+sessionStorage.setItem('uuid', UUID)
 const eventSource = new EventSource(`${BASE_URL}/api/subscribe/${UUID}`)
 // const channel = new BroadcastChannel('sw-messages')
 console.log('Registered SW')
 eventSource.onmessage = ({data}) => {
     // channel.postMessage(data)
-    console.log(data)
+    console.log('data received from sw: ', data)
     self.clients.matchAll().then(clients => {
-        clients.forEach(client => client.postMessage(data));
+        const message = {
+            status: 'GOOD',
+            text: data,
+            uuid: UUID
+        }
+        clients.forEach(client => client.postMessage(message))
     })
 }
+
+eventSource.onerror = event => {
+    console.log('error catched from sw: ', event)
+    self.clients.matchAll().then(clients => {
+        const message = {
+            status: 'BAD',
+            text: 'Error occurred',
+            uuid: UUID
+        }
+        clients.forEach(client => client.postMessage(message))
+    })
+}
+

@@ -16,14 +16,4 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
-  <script>
-    if ("serviceWorker" in navigator) {
-      const sw = navigator.serviceWorker
-      window.addEventListener('load', () => {
-        sw.register("sse-sw.js").then(() => {
-          console.log('sw registered')
-        })
-      })
-    }
-  </script>
 </html>
