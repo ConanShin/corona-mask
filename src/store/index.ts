@@ -6,12 +6,7 @@ axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded
 
 Vue.use(Vuex)
 
-const getUUID = () => { // UUID v4 generator in JavaScript (RFC4122 compliant)
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-        const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8)
-        return v.toString(16)
-    })
-}
+
 const BASE_URL = 'http://52.79.142.42:5000'
 // const BASE_URL = 'https://localhost:5000'
 
@@ -19,8 +14,7 @@ export default new Vuex.Store({
     state: {
         token: 'Loading...!',
         message: 'No Message',
-        eventSource: null,
-        UUID: getUUID()
+        eventSource: null
     },
     mutations: {},
     actions: {
@@ -38,8 +32,9 @@ export default new Vuex.Store({
             if (!!window.EventSource) {
                 if (!context.state.eventSource) {
                     console.log('event listener connected')
+                    const UUID = sessionStorage.getItem('UUID')
                     // @ts-ignore
-                    context.state.eventSource = new EventSource(`${BASE_URL}/api/subscribe/${context.state.UUID}`)
+                    context.state.eventSource = new EventSource(`${BASE_URL}/api/subscribe/${UUID}`)
                     // @ts-ignore
                     context.state.eventSource.addEventListener('message', ({data}) => {
                         context.state.message = data
@@ -54,7 +49,8 @@ export default new Vuex.Store({
                     // @ts-ignore
                     context.state.eventSource.close()
                     context.state.eventSource = null
-                    await axios.delete(`${BASE_URL}/api/remove/${context.state.UUID}`)
+                    const UUID = sessionStorage.getItem('UUID')
+                    await axios.delete(`${BASE_URL}/api/remove/${UUID}`)
                 }
             }
         }
@@ -66,3 +62,4 @@ export default new Vuex.Store({
     },
     modules: {}
 })
+

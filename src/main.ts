@@ -38,6 +38,17 @@ if (firebase.messaging.isSupported()) {
     console.log('Firebase messaging is not supported')
 }
 
+// Set UUID for current device
+const getUUID = () => { // UUID v4 generator in JavaScript (RFC4122 compliant)
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+        const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 3 | 8)
+        return v.toString(16)
+    })
+}
+if (!sessionStorage.getItem('UUID')) {
+    sessionStorage.setItem('UUID', getUUID())
+}
+
 window.onbeforeunload = async () => {
     await store.dispatch('stopSSE')
 }
