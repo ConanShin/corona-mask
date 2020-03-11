@@ -49,8 +49,16 @@ if (!sessionStorage.getItem('UUID')) {
     sessionStorage.setItem('UUID', getUUID())
 }
 
-window.onunload = async () => {
-    await store.dispatch('stopSSE')
+const isOnIOS = navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPod/i);
+console.log('isOniOS: ', isOnIOS)
+if (isOnIOS) {
+    window.onpagehide = async () => {
+        await store.dispatch('stopSSE')
+    }
+} else {
+    window.onbeforeunload = async () => {
+        await store.dispatch('stopSSE')
+    }
 }
 
 new Vue({
