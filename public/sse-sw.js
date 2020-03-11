@@ -9,7 +9,12 @@ const getUUID = () => { // UUID v4 generator in JavaScript (RFC4122 compliant)
 }
 const UUID = getUUID()
 const eventSource = new EventSource(`${BASE_URL}/api/subscribe/${UUID}`)
-const channel = new BroadcastChannel('sw-messages')
+// const channel = new BroadcastChannel('sw-messages')
+console.log('Registered SW')
 eventSource.onmessage = ({data}) => {
-    channel.postMessage(data)
+    // channel.postMessage(data)
+    console.log(data)
+    self.clients.matchAll().then(clients => {
+        clients.forEach(client => client.postMessage(data));
+    })
 }
