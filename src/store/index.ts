@@ -12,7 +12,7 @@ const getUUID = () => { // UUID v4 generator in JavaScript (RFC4122 compliant)
         return v.toString(16)
     })
 }
-const BASE_URL = 'https://52.79.142.42:5000'
+const BASE_URL = 'http://52.79.142.42:5000'
 // const BASE_URL = 'https://localhost:5000'
 
 export default new Vuex.Store({
