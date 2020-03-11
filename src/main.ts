@@ -38,6 +38,10 @@ if (firebase.messaging.isSupported()) {
     console.log('Firebase messaging is not supported')
 }
 
+window.onbeforeunload = async () => {
+    await store.dispatch('stopSSE')
+}
+
 new Vue({
     router,
     store,
