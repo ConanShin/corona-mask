@@ -1,4 +1,4 @@
-const BASE_URL = 'http://52.79.142.42:5000'
+const BASE_URL = 'https://pubsub.conanshin.tech:5000'
 // const BASE_URL = 'https://localhost:5000'
 
 const getUUID = () => { // UUID v4 generator in JavaScript (RFC4122 compliant)
@@ -8,14 +8,13 @@ const getUUID = () => { // UUID v4 generator in JavaScript (RFC4122 compliant)
     })
 }
 const UUID = getUUID()
-sessionStorage.setItem('uuid', UUID)
 const eventSource = new EventSource(`${BASE_URL}/api/subscribe/${UUID}`)
 // const channel = new BroadcastChannel('sw-messages')
 console.log('Registered SW')
 eventSource.onmessage = ({data}) => {
     // channel.postMessage(data)
     console.log('data received from sw: ', data)
-    self.clients.matchAll().then(clients => {
+    self.clients.matchAll({includeUncontrolled: true, type: 'window'}).then(clients => {
         const message = {
             status: 'GOOD',
             text: data,
